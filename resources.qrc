@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/Icons">
+        <file>ecg-lines.png</file>
+        <file>ekg-monitor (1).png</file>
+        <file>ekg-monitor.png</file>
+        <file>if_arrow-down_173146.png</file>
+        <file>if_arrow-left_173147.png</file>
+        <file>if_edit_173002.png</file>
+        <file>if_folder-open_173017.png</file>
+        <file>if_gears_173021.png</file>
+        <file>if_info-sign_173039.png</file>
+        <file>if_list_173044.png</file>
+        <file>if_login_173049.png</file>
+        <file>if_ok-sign_173063.png</file>
+        <file>if_plus-sign_173078 (1).png</file>
+        <file>if_search_173095.png</file>
+        <file>if_minus-sign_173056.png</file>
+        <file>if_save_173091.png</file>
+        <file>cancel_zoom.png</file>
+    </qresource>
+</RCC>
