@@ -34,8 +34,7 @@ public:
     QLineEdit *heightLineEdit;
     QLineEdit *widthLineEdit;
     QLineEdit *sampleRateLineEdit;
-    QComboBox *colorsComboBox;
-    void setTableViewData(QList<double> *data);
+    void setTableViewData(QList<double> data);
     bool checkFile(QFile *file);
 
 private:
@@ -81,8 +80,13 @@ public slots:
     void newHeightValueEntered();
     void newSampleRateValueEntered();
     void selectedColorChanged(QString color);
+    void markerSelectedColorChanged(QString color);
     void onChartSaved();
+    void showMarkerChanged(int state);
 private slots:
+    void on_ecgTableView_clicked(const QModelIndex &index);
+    void on_plotLineWidthLineEdit_returnPressed();
+    void on_markerSizeLineEdit_returnPressed();
 };
 
 #endif // MAINWINDOW_H

@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/Icons/ekg-monitor.png</normaloff>:/Icons/ekg-monitor.png</iconset>
+    <normaloff>:/Icons/Icon/Icons/ekg-monitor.png</normaloff>:/Icons/Icon/Icons/ekg-monitor.png</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -32,49 +32,602 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
+     <widget class="QSplitter" name="splitter">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>1</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="styleSheet">
-       <string notr="true">border: 0px</string>
+       <string notr="true">QSplitter::handle {
+    background: rgb(0, 0, 0);
+	margin-left: 2px;
+	margin-right: 2px;
+}</string>
       </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QwtPlot" name="chartView">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>16</width>
-         <height>16</height>
-        </rect>
+      <property name="handleWidth">
+       <number>1</number>
+      </property>
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="enabled">
+        <bool>true</bool>
        </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 0px</string>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QwtPlot" name="chartView">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::NoContextMenu</enum>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QToolBox" name="toolBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="sizeIncrement">
+       <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>200</width>
          <height>0</height>
         </size>
        </property>
-       <property name="contextMenuPolicy">
-        <enum>Qt::NoContextMenu</enum>
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>16777215</height>
+        </size>
        </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
+       <widget class="QWidget" name="page">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>400</width>
+          <height>518</height>
+         </rect>
+        </property>
+        <attribute name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Icons/Icon/Icons/ecg-lines.png</normaloff>:/Icons/Icon/Icons/ecg-lines.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>ECG Data</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QTableView" name="ecgTableView">
+           <property name="font">
+            <font>
+             <family>Consolas</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>400</width>
+          <height>518</height>
+         </rect>
+        </property>
+        <attribute name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Icons/Icon/Icons/line-chart.png</normaloff>:/Icons/Icon/Icons/line-chart.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>ECG View</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="0">
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>Plot</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_5">
+              <item row="0" column="0">
+               <layout class="QGridLayout" name="gridLayout_4">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label">
+                  <property name="font">
+                   <font>
+                    <family>Consolas</family>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Plot color:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="plotColorComboBox"/>
+                </item>
+                <item row="0" column="2">
+                 <spacer name="horizontalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_2">
+                  <property name="font">
+                   <font>
+                    <family>Consolas</family>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Line width:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="plotLineWidthLineEdit">
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit {
+ border: 1px solid gray;
+ border-radius: 5px;
+}</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QGroupBox" name="groupBox_2">
+             <property name="title">
+              <string>Marker</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_6">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_3">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Marker color:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>130</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLineEdit" name="markerSizeLineEdit">
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+ border: 1px solid gray;
+ border-radius: 5px;
+}</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Marker size:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QComboBox" name="markerColorComboBox"/>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Show marker:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QCheckBox" name="showMarkerCheckBox">
+                <property name="styleSheet">
+                 <string notr="true">QComboBox{border: 1px solid gray; border-radius: 3px;}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page_3">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>400</width>
+          <height>518</height>
+         </rect>
+        </property>
+        <attribute name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/Icons/Icon/Icons/analysis.png</normaloff>:/Icons/Icon/Icons/analysis.png</iconset>
+        </attribute>
+        <attribute name="label">
+         <string>Chart Data</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_8">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout_7">
+           <item row="0" column="0">
+            <widget class="QGroupBox" name="groupBox_1">
+             <property name="title">
+              <string>Chart Data</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_11">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_6">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <kerning>false</kerning>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Samples number:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="samplesNumberLabel">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <spacer name="horizontalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>234</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_8">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <kerning>false</kerning>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Min mV:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="minmvLabel">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_9">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <kerning>false</kerning>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Max mV:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="maxmvLabel">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_7">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <kerning>false</kerning>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Sample rate:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLabel" name="sampleRateLabel">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_10">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <kerning>false</kerning>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Measurment time:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLabel" name="secondsLabel">
+                <property name="font">
+                 <font>
+                  <family>Consolas</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QGroupBox" name="groupBox_4">
+             <property name="title">
+              <string>Chart Data File</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_10">
+              <item row="0" column="0">
+               <layout class="QGridLayout" name="gridLayout_9">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_11">
+                  <property name="font">
+                   <font>
+                    <family>Consolas</family>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                    <kerning>false</kerning>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>File path:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="filePathLabel">
+                  <property name="font">
+                   <font>
+                    <family>Consolas</family>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>-</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="1">
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0">
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -95,7 +648,19 @@
      <height>20</height>
     </size>
    </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
    <widget class="QMenu" name="menuPlik">
+    <property name="font">
+     <font>
+      <family>Consolas</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>File</string>
     </property>
@@ -104,6 +669,12 @@
     <addaction name="actionCloseApp"/>
    </widget>
    <widget class="QMenu" name="menuWykres">
+    <property name="font">
+     <font>
+      <family>Consolas</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>Chart</string>
     </property>
@@ -138,13 +709,14 @@
   <action name="actionOpenFile">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/Icons/if_folder-open_173017.png</normaloff>:/Icons/if_folder-open_173017.png</iconset>
+     <normaloff>:/Icons/Icon/Icons/if_folder-open_173017.png</normaloff>:/Icons/Icon/Icons/if_folder-open_173017.png</iconset>
    </property>
    <property name="text">
     <string>Open</string>
    </property>
    <property name="font">
     <font>
+     <family>Consolas</family>
      <pointsize>10</pointsize>
     </font>
    </property>
@@ -152,19 +724,31 @@
   <action name="actionCloseApp">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/Icons/if_login_173049.png</normaloff>:/Icons/if_login_173049.png</iconset>
+     <normaloff>:/Icons/Icon/Icons/if_login_173049.png</normaloff>:/Icons/Icon/Icons/if_login_173049.png</iconset>
    </property>
    <property name="text">
     <string>Close</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionSave">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/Icons/if_save_173091.png</normaloff>:/Icons/if_save_173091.png</iconset>
+     <normaloff>:/Icons/Icon/Icons/if_save_173091.png</normaloff>:/Icons/Icon/Icons/if_save_173091.png</iconset>
    </property>
    <property name="text">
     <string>Save as...</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionZoom_In">
@@ -173,7 +757,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/Icons/if_plus-sign_173078 (1).png</normaloff>:/Icons/if_plus-sign_173078 (1).png</iconset>
+     <normaloff>:/Icons/Icon/Icons/if_plus-sign_173078 (1).png</normaloff>:/Icons/Icon/Icons/if_plus-sign_173078 (1).png</iconset>
    </property>
    <property name="text">
     <string>Zoom In</string>
@@ -183,6 +767,12 @@
    </property>
    <property name="toolTip">
     <string>Zoom in</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="visible">
     <bool>true</bool>
@@ -204,7 +794,7 @@
   <action name="actionZoom_Out">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/Icons/if_minus-sign_173056.png</normaloff>:/Icons/if_minus-sign_173056.png</iconset>
+     <normaloff>:/Icons/Icon/Icons/if_minus-sign_173056.png</normaloff>:/Icons/Icon/Icons/if_minus-sign_173056.png</iconset>
    </property>
    <property name="text">
     <string>Zoom Out</string>
@@ -212,14 +802,26 @@
    <property name="toolTip">
     <string>Zoom out</string>
    </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionPlotInitSize">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/Icons/cancel_zoom.png</normaloff>:/Icons/cancel_zoom.png</iconset>
+     <normaloff>:/Icons/Icon/Icons/cancel_zoom.png</normaloff>:/Icons/Icon/Icons/cancel_zoom.png</iconset>
    </property>
    <property name="text">
     <string>Primary size</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
  </widget>

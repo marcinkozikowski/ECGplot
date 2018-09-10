@@ -21,10 +21,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    ecgchart.cpp
+    ecgchart.cpp \
 
 HEADERS  += mainwindow.h \
-    ecgchart.h
+    ecgchart.h \
 
 FORMS    += mainwindow.ui
 

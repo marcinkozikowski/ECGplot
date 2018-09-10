@@ -10,6 +10,8 @@
 #include <qwt_scale_draw.h>
 #include <qwt_scale_engine.h>
 #include <qwt_plot_magnifier.h>
+#include <qwt_plot_marker.h>
+#include <qwt_scale_div.h>
 
 class TimeScaleDraw: public QwtScaleDraw
 {
@@ -48,11 +50,24 @@ public:
     QwtPlot *plot;
     void setSampleRate(int value);
     void setPlotColor(QColor color);
+    void setMarkerPosition(qreal x, qreal y);
+    void setMarkerColor(QColor color);
+    void setMarkerSize(int size);
+    void setPlotLineWidth(int width);
+    void isMarkerVisible(int state);
+    int mVTicks;
+    QString minMV;
+    QString maxMV;
 private:
     QPolygonF points;
     QwtPlotCurve *curve;
     QList<double> *plotData;
     int plotSampleRate;
+    QwtPlotMarker *currentPoint;
+    int markerSize;
+    int lineWidth;
+    QColor lineColor;
+    QColor markerColor;
 };
 
 

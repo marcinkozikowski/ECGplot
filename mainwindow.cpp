@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include "ecgchart.h"
+#include <QScrollBar>
 
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
@@ -10,6 +11,7 @@
 #include <qwt_symbol.h>
 #include <qwt_legend.h>
 #include <qwt_scale_draw.h>
+
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -33,6 +35,8 @@ void MainWindow::initMainWindow(){
     connect(ui->actionZoom_In,SIGNAL(triggered()),this,SLOT(zoomInClick()));
     connect(ui->actionZoom_Out,SIGNAL(triggered()),this,SLOT(zoomOutClick()));
     connect(ui->actionPlotInitSize,SIGNAL(triggered()),this,SLOT(setInitPlotSize()));
+    ui->splitter->setStretchFactor(0,1);
+    ui->splitter->setStretchFactor(1, 0);
 }
 
 void MainWindow::initStatusBarWidgets()
@@ -69,10 +73,12 @@ void MainWindow::initToolBarItems()
     //Szerokosc
     QLabel *widthLabel = new QLabel(this);
     widthLabel->setText("Width: ");
+    widthLabel->setFont(QFont("Consolas",10));
     widthLabel->setAlignment(Qt::AlignLeft|Qt::AlignCenter);
     ui->mainToolBar->addWidget(widthLabel);
     widthLineEdit = new QLineEdit(this);
     widthLineEdit->setMaximumWidth(80);
+    widthLineEdit->setStyleSheet("QLineEdit { border-radius: 5px; border: 1px solid gray; }");
     connect(widthLineEdit,SIGNAL(returnPressed()),this,SLOT(newWidthValueEntered()));
     ui->mainToolBar->addWidget(widthLineEdit);
 
@@ -81,9 +87,11 @@ void MainWindow::initToolBarItems()
     heightLabel->setText("Height: ");
     heightLabel->setAlignment(Qt::AlignCenter);
     heightLabel->setMargin(4);
+    heightLabel->setFont(QFont("Consolas",10));
     ui->mainToolBar->addWidget(heightLabel);
     heightLineEdit = new QLineEdit(this);
     heightLineEdit->setMaximumWidth(80);
+    heightLineEdit->setStyleSheet("QLineEdit { border-radius: 5px; border: 1px solid gray; }");
     connect(heightLineEdit,SIGNAL(returnPressed()),this,SLOT(newHeightValueEntered()));
     ui->mainToolBar->addWidget(heightLineEdit);
 
@@ -92,44 +100,43 @@ void MainWindow::initToolBarItems()
     ui->mainToolBar->addWidget(space);
 
     aspectCheckBox = new QCheckBox(this);
+    aspectCheckBox->setStyleSheet("QComboBox {border: 1px solid gray;border-radius: 5px;}");
     aspectCheckBox->setText("Aspect ratio");
+    aspectCheckBox->setFont(QFont("Consolas",10));
     ui->mainToolBar->addWidget(aspectCheckBox);
     ui->mainToolBar->addSeparator();
 
     QLabel *sampleRateLabel = new QLabel(this);
     sampleRateLabel->setText("Sample rate (Hz): ");
+    sampleRateLabel->setFont(QFont("Consolas",10));
     sampleRateLabel->setAlignment(Qt::AlignCenter);
     sampleRateLabel->setMargin(4);
     ui->mainToolBar->addWidget(sampleRateLabel);
     sampleRateLineEdit = new QLineEdit(this);
+    sampleRateLineEdit->setStyleSheet("QLineEdit { border-radius: 5px; border: 1px solid gray; }");
     sampleRateLineEdit->setMaximumWidth(80);
     connect(sampleRateLineEdit,SIGNAL(returnPressed()),this,SLOT(newSampleRateValueEntered()));
     ui->mainToolBar->addWidget(sampleRateLineEdit);
     ui->mainToolBar->addSeparator();
 
-    QLabel *penColor = new QLabel(this);
-    penColor->setText("Plot color: ");
-    penColor->setAlignment(Qt::AlignCenter);
-    penColor->setMargin(4);
-    ui->mainToolBar->addWidget(penColor);
-
-    colorsComboBox = new QComboBox(this);
-    colorsComboBox->setMinimumWidth(80);
-    colorsComboBox->setMaximumWidth(80);
-    colorsComboBox->setStyleSheet("QComboBox { background-color: white; }");
+    ui->plotColorComboBox->setStyleSheet("QComboBox { background-color: white; }");
+    ui->markerColorComboBox->setStyleSheet("QComboBox { background-color: white; }");
 
     colors.insert("Red",QColor(255, 0, 0));
     colors.insert("Green",QColor(0, 255, 0));
     colors.insert("Blue",QColor(0, 0, 255));
     colors.insert("Black",QColor(0,0,0));
 
-    colorsComboBox->addItems(colors.keys());
-    colorsComboBox->setCurrentIndex(3);
-    connect(colorsComboBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(selectedColorChanged(QString)));
-
-    //connect(sampleRateLineEdit,SIGNAL(returnPressed()),this,SLOT(newSampleRateValueEntered()));
-    ui->mainToolBar->addWidget(colorsComboBox);
-    ui->mainToolBar->addSeparator();
+    ui->plotColorComboBox->addItems(colors.keys());
+    ui->plotColorComboBox->setCurrentIndex(0);
+    ui->markerColorComboBox->addItems(colors.keys());
+    ui->markerColorComboBox->setCurrentIndex(3);
+    ui->showMarkerCheckBox->setChecked(true);
+    ui->markerSizeLineEdit->setText(QString::number(15));
+    ui->plotLineWidthLineEdit->setText(QString::number(3));
+    connect(ui->plotColorComboBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(selectedColorChanged(QString)));
+    connect(ui->markerColorComboBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(markerSelectedColorChanged(QString)));
+    connect(ui->showMarkerCheckBox,SIGNAL(stateChanged(int)),this,SLOT(showMarkerChanged(int)));
 
     aspectCheckBox->setChecked(true);
     canPlotAction(false);
@@ -152,6 +159,7 @@ void MainWindow::openNewFile()
             resetPlotSizeConstraints();
         }
         graphData.clear();
+        ui->filePathLabel->setText(currentFile);
         QFile file(currentFile);
         if(checkFile(&file))
         {
@@ -165,10 +173,16 @@ void MainWindow::openNewFile()
                     graphData.append(d);
                 }
             }
+            ui->samplesNumberLabel->setText(QString::number(graphData.length()));
             createNewChart(graphData);
+            ui->minmvLabel->setText(chart->minMV+" mV");
+            ui->maxmvLabel->setText(chart->maxMV+ "mV");
+            setTableViewData(graphData);
             canPlotAction(true);
             isPlotLoaded = true;
             statusLabel->setText("File: \""+currentFile+"\" was sucesfully loaded.");
+            ui->sampleRateLabel->setText(QString::number(retriveSampleRate())+" Hz");
+            ui->secondsLabel->setText(QString::number(graphData.length()/retriveSampleRate())+" s");
         }
         else
         {
@@ -235,19 +249,22 @@ void MainWindow::createNewChart(QList<double> data)
     zoomStepWidth = chart->plot->size().width()*initAspectRatio;
     zoomStepHeight = chart->plot->size().height()*initAspectRatio;
     currentWidth = initWidth;
+    ui->showMarkerCheckBox->setChecked(true);
 }
 
-void MainWindow::setTableViewData(QList<double> *data)
+void MainWindow::setTableViewData(QList<double> data)
 {
-    QStandardItemModel *model = new QStandardItemModel(data->length(),2,this); //Rows and 2 Columns
-    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Nr. próbki")));
-    model->setHorizontalHeaderItem(1, new QStandardItem(QString("Wartość")));
+    QStandardItemModel *model = new QStandardItemModel(data.length(),2,this); //Rows and 2 Columns
+    model->setHorizontalHeaderItem(0, new QStandardItem(QString("Sample")));
+    model->setHorizontalHeaderItem(1, new QStandardItem(QString("Value")));
 
-    for(int i = 0; i < data->length() ; i++)
+    for(int i = 0; i < data.length() ; i++)
     {
         model->setItem(i,0,new QStandardItem(QString::number(i)));
-        model->setItem(i,1,new QStandardItem(QString::number(data->at(i))));
+        model->setItem(i,1,new QStandardItem(QString::number(data.at(i))));
     }
+    ui->ecgTableView->setModel(model);
+    ui->ecgTableView->setColumnWidth(0,50);
 }
 
 void MainWindow::closeMainWIndow()
@@ -270,8 +287,8 @@ void MainWindow::saveAsPng()
 }
 
 int MainWindow::performSaveChart(QString fileName){
-     ui->chartView->grab().save(fileName);
-     return 1;
+    ui->chartView->grab().save(fileName);
+    return 1;
 }
 
 
@@ -329,7 +346,10 @@ void MainWindow::canPlotAction(bool value){
     sampleRateLineEdit->setEnabled(value);
     widthLineEdit->setEnabled(value);
     heightLineEdit->setEnabled(value);
-    colorsComboBox->setEnabled(value);
+    ui->plotColorComboBox->setEnabled(value);
+    ui->markerColorComboBox->setEnabled(value);
+    ui->markerSizeLineEdit->setEnabled(value);
+    ui->plotLineWidthLineEdit->setEnabled(value);
 }
 
 void MainWindow::setInfoValues(int width, int height)
@@ -385,8 +405,10 @@ void MainWindow::newSampleRateValueEntered()
 {
     resetPlotSizeConstraints();
     createNewChart(graphData);
-//    sampleRate = retriveSampleRate();
-//    chart->setSampleRate(sampleRate);
+    ui->sampleRateLabel->setText(QString::number(retriveSampleRate())+" Hz");
+    ui->secondsLabel->setText(QString::number(graphData.length()/retriveSampleRate())+" s");
+    //    sampleRate = retriveSampleRate();
+    //    chart->setSampleRate(sampleRate);
 }
 
 void MainWindow::resetPlotSizeConstraints(){
@@ -402,3 +424,42 @@ void MainWindow::selectedColorChanged(QString color)
 {
     chart->setPlotColor(colors[color]);
 }
+
+void MainWindow::markerSelectedColorChanged(QString color)
+{
+    chart->setMarkerColor(colors[color]);
+}
+
+void MainWindow::on_ecgTableView_clicked(const QModelIndex &index)
+{
+    if(ui->showMarkerCheckBox->isChecked())
+    {
+        chart->setMarkerPosition(index.row(),graphData.at(index.row()));
+        QScrollBar *h = ui->scrollArea->horizontalScrollBar();
+        QScrollBar *v = ui->scrollArea->verticalScrollBar();
+        int positionH = ((ui->chartView->width()/graphData.length())*index.row())-h->width()/2;
+        int positionV = ((ui->chartView->height()/chart->mVTicks)/std::abs(graphData.at(index.row())))-v->width()/2;
+        h->setValue(positionH);
+        v->setValue(positionV);
+    }
+}
+
+void MainWindow::on_plotLineWidthLineEdit_returnPressed()
+{
+    bool ok = false;
+    int size = ui->plotLineWidthLineEdit->text().toInt(&ok);
+    if(ok) chart->setPlotLineWidth(size);
+}
+
+void MainWindow::on_markerSizeLineEdit_returnPressed()
+{
+    bool ok = false;
+    int size = ui->markerSizeLineEdit->text().toInt(&ok);
+    if(ok) chart->setMarkerSize(size);
+}
+
+void MainWindow::showMarkerChanged(int state)
+{
+    chart->isMarkerVisible(state);
+}
+
