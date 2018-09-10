@@ -44,44 +44,18 @@ void EcgChart::drawPlot(){
     plot->setAxisScaleDraw(QwtPlot::xBottom, timeScaleDraw);
 
 
-    QwtScaleDiv divX;
+    //QwtScaleDiv divX;
     QwtLinearScaleEngine *lineX = new QwtLinearScaleEngine();
-    divX = lineX->divideScale(0,plotData->length(),plotData->length()/plotSampleRate,0,plotSampleRate*0.04);
-
-//    //Set major ticks
-////    QList<double> majorTicks;
-////    QList<double> minorTicks;
-////    double tickStep = plotSampleRate*0.04;
-////    qDebug()<<"X Tick step: "+QString::number(tickStep);
-////    for(int i=0 ;i<(plotData->length()/plotSampleRate)*25;i++)
-////    {
-////        if(i%5 == 0)
-////        {
-////            majorTicks<<i*tickStep;
-////            qDebug()<<"Major: "+QString::number(i);
-////        }
-////        else
-////        {
-////            minorTicks<<i*tickStep;
-////            qDebug()<<i;
-////        }
-////    }
-////    divX.setTicks(QwtScaleDiv::MajorTick,majorTicks);
-////    divX.setTicks(QwtScaleDiv::MinorTick, minorTicks);
+    lineX->divideScale(0,plotData->length(),plotData->length()/plotSampleRate,0,plotSampleRate*0.04);
 
 
-//    plot->setAxisScaleDiv(QwtPlot::xBottom,divX);
+    plot->setAxisScaleDiv(QwtPlot::xBottom,lineX->divideScale(0,plotData->length(),plotData->length()/plotSampleRate,0,plotSampleRate*0.04));
 
-////    QList<double> majorTicksY;
-////    majorTicksY<<-2<<-1.5<<-1<<0<<0.5<<1<<1.5<<2;
-////    QList<double> minorTicksY;
-////    minorTicksY<<-1.9<<-1.8<<-1.7<<-1.6<<-1.5<<-1.4<<-1.3<<-1.2<<-1.1<<-0.9<<-0.8<<-0.7<<-0.6<<-0.4<<-0.3<<-0.2<<-0.1<<0.1<<0.2<<0.3<<0.4<<0.5<<0.6<<0.7<<0.8<<0.9<<1.1<<1.2<<1.3<<1.4<<1.5<<1.6<<1.7<<1.8<<1.9;
 //    QwtScaleDiv divY;
-//    QwtLinearScaleEngine *lineY = new QwtLinearScaleEngine();
+    QwtLinearScaleEngine *lineY = new QwtLinearScaleEngine();
 //    divY = lineY->divideScale(min.toDouble(&ok)-0.1,max.toDouble(&ok)+0.1,mVTicks,0);
-////    divY.setTicks(QwtScaleDiv::MajorTick,majorTicksY);
-////    divY.setTicks(QwtScaleDiv::MinorTick,minorTicksY);
-//    plot->setAxisScaleDiv(QwtPlot::yLeft,divY);
+
+plot->setAxisScaleDiv(QwtPlot::yLeft,lineY->divideScale(min.toDouble(&ok)-0.1,max.toDouble(&ok)+0.1,mVTicks,0));
 
     plot->setAxisTitle(QwtPlot::xBottom,"Time [s]");
     plot->setAxisTitle(QwtPlot::yLeft,"Millivolts [mV]");
